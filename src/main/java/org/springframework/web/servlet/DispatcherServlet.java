@@ -453,7 +453,7 @@ public class DispatcherServlet extends FrameworkServlet {
 		initRequestToViewNameTranslator(context);
 		//解析模板中的内容
 		initViewResolvers(context);
-		//
+		
 		initFlashMapManager(context);
 	}
 
@@ -903,7 +903,6 @@ public class DispatcherServlet extends FrameworkServlet {
 				processedRequest = checkMultipart(request);
 				multipartRequestParsed = processedRequest != request;
 
-				// Determine handler for the current request.
 				// 2.取得处理当前请求的controller,这里也称为hanlder,处理器,第一个步骤的意义就在这里体现了.
 				//这里并不是直接返回controller,而是返回的HandlerExecutionChain请求处理器链对象,
 				//该对象封装了handler和interceptors.
@@ -914,12 +913,10 @@ public class DispatcherServlet extends FrameworkServlet {
 					return;
 				}
 
-				// Determine handler adapter for the current request.
 				//3. 获取处理request的处理器适配器handler adapter 
 				HandlerAdapter ha = getHandlerAdapter(mappedHandler.getHandler());
 
-				// Process last-modified header, if supported by the handler.
-				// 处理 last-modified 请求头
+				// 获取请求方式，如：GET, POST, PUT
 				String method = request.getMethod();
 				boolean isGet = "GET".equals(method);
 				if (isGet || "HEAD".equals(method)) {
@@ -940,7 +937,6 @@ public class DispatcherServlet extends FrameworkServlet {
 				}
 
 				try {
-					// Actually invoke the handler.
 					// 5.实际的处理器处理请求,返回结果视图对象
 					mv = ha.handle(processedRequest, response, mappedHandler.getHandler());
 				}
